@@ -11,6 +11,7 @@ use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 pub fn sum(a: BN, b: BN) -> Result<BN, JsValue> {
+    /// `BNError` implements `Into<JsValue>`, so we can use `?` here
     let a: u128 = a.try_into()?;
     let b: u128 = b.try_into()?;
 
