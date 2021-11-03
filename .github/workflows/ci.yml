@@ -1,0 +1,59 @@
+on:
+  push:
+    branches: 
+      - main
+  pull_request:
+
+name: Tests
+
+jobs:
+  lint:
+    name: lints
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+      - name: Install toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          profile: minimal
+          components: rustfmt, clippy
+          override: true
+      - uses: Swatinem/rust-cache@v1
+        with:
+          cache-on-failure: true
+      - name: cargo fmt
+        run: cargo +nightly fmt --all -- --check
+      - name: cargo clippy
+        run: cargo +nightly clippy --all --all-features -- -D warnings
+
+  wasm:
+    name: Wasm
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+      - name: Install rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: wasm32-unknown-unknown
+          profile: minimal
+          override: true
+      - uses: Swatinem/rust-cache@v1
+        with:
+          cache-on-failure: true
+      - name: Check
+        uses: actions-rs/cargo@v1
+        with:
+          command: check
+          args: --target wasm32-unknown-unknown
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+      - name: Wasm-pack test
+        run: wasm-pack test --node
