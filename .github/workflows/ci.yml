@@ -55,5 +55,7 @@ jobs:
           args: --target wasm32-unknown-unknown
       - name: Install wasm-pack
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+      - name: Install yarn dependencides
+        run: yarn
       - name: Wasm-pack test
         run: wasm-pack test --node
