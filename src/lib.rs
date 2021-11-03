@@ -1,9 +1,7 @@
 pub use bn::BN;
 pub use error::BNError;
-pub use from::*;
-pub use try_into::*;
 
 mod bn;
 mod error;
-mod from;
-mod try_into;
+mod from_type;
+mod try_from_bn;
