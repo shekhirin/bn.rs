@@ -8,7 +8,7 @@ name: Tests
 
 jobs:
   lint:
-    name: lints
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
