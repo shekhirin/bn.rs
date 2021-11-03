@@ -1,0 +1,7 @@
+{
+  "name": "bn-rs",
+  "license": "MIT OR Apache-2.0",
+  "devDependencies": {
+    "bn.js": "^5.2.0"
+  }
+}

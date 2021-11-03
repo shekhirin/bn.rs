@@ -1,0 +1,13 @@
+[package]
+name = "bn-rs-example"
+version = "0.1.0"
+authors = ["Alexey Shekhirin <alexey@shekhirin.com>"]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+bn-rs = { path = ".." }
+wasm-bindgen = "0.2.78"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
