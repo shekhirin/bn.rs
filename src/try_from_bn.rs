@@ -64,9 +64,8 @@ try_from_std!(u128);
 
 #[cfg(test)]
 mod tests {
-    use std::convert::TryInto;
-
     use primitive_types::{H160, H256, H512, U128, U256, U512};
+    use std::str::FromStr;
     use wasm_bindgen_test::*;
 
     use crate::{error::BNError, BN};
@@ -105,7 +104,7 @@ mod tests {
             H256::try_from(BN::from(bn.clone())).unwrap(),
             H256::from([u8::MAX; 32]),
         );
-        assert_eq!(TryInto::<H256>::try_into(middle_bn).unwrap(), middle_h256,);
+        assert_eq!(H256::try_from(middle_bn).unwrap(), middle_h256,);
         assert_eq!(
             H512::try_from(bn).unwrap(),
             H512::from(<[u8; 64]>::try_from([[0; 32], [u8::MAX; 32]].concat()).unwrap()),
