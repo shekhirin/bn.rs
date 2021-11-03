@@ -1,6 +1,6 @@
 # <h1 align="center"> bn.rs </h1>
 
-**[bn.js](https://github.com/indutny/bn.js/) bindings for Rust & WebAssembly**
+**[bn.js](https://github.com/indutny/bn.js/) bindings for Rust & WebAssembly with [primitive-types](https://github.com/paritytech/parity-common/tree/master/primitive-types) support**
 
 ---
 
