@@ -37,7 +37,7 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v1
         with:
-          node-version: 10
+          node-version: 12
       - name: Install rust
         uses: actions-rs/toolchain@v1
         with:
@@ -72,7 +72,7 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v1
         with:
-          node-version: 10
+          node-version: 12
       - name: Install rust
         uses: actions-rs/toolchain@v1
         with:
