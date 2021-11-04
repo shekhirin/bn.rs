@@ -9,6 +9,7 @@ macro_rules! try_from {
             type Error = BNError;
 
             fn try_from(value: BN) -> Result<$type, Self::Error> {
+                // TODO: handle non-uint std types (isize/i8/i16/i32/i64/i128)
                 if value.negative() == 1 {
                     return Err(BNError::NegativeUint);
                 }
@@ -17,6 +18,7 @@ macro_rules! try_from {
                     return Err(BNError::Overflow(stringify!($type).into()));
                 }
 
+                // TODO: use `BN::words()` to transform bn.js 26 word-size array to [u64]
                 let bytes = <[u8; $byte_length as usize]>::try_from(
                     &*value
                         .to_array("be".into(), $byte_length)
