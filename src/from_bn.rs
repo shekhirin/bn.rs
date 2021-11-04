@@ -65,7 +65,6 @@ try_from_std!(u128);
 #[cfg(test)]
 mod tests {
     use primitive_types::{H160, H256, H512, U128, U256, U512};
-    use std::str::FromStr;
     use wasm_bindgen_test::*;
 
     use crate::{error::BNError, BN};
