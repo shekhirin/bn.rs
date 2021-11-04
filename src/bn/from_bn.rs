@@ -1,7 +1,7 @@
 use js_sys::JsString;
 use primitive_types::{H128, H160, H256, H512, U128, U256, U512};
 
-use crate::{bn::BN, error::BNError};
+use crate::bn::{BNError, BN};
 
 macro_rules! try_from {
     ($type:ty, $byte_length:expr, $from_fn:ident) => {
@@ -69,7 +69,7 @@ mod tests {
     use primitive_types::{H160, H256, H512, U128, U256, U512};
     use wasm_bindgen_test::*;
 
-    use crate::{error::BNError, BN};
+    use crate::bn::{BNError, BN};
 
     #[wasm_bindgen_test]
     fn try_from_primitive_uint() {
