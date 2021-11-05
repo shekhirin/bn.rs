@@ -27,7 +27,7 @@ extern "C" {
 mod tests {
     use wasm_bindgen_test::*;
 
-    use crate::BN;
+    use super::BN;
 
     #[wasm_bindgen_test]
     fn new() {

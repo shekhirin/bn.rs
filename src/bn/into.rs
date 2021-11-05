@@ -1,6 +1,6 @@
 use primitive_types::{H128, H160, H256, H512, U128, U256, U512};
 
-use crate::BN;
+use super::BN;
 
 macro_rules! from_primitive {
     ($type:ty) => {
@@ -48,7 +48,7 @@ mod tests {
     use primitive_types::{H256, U128, U256};
     use wasm_bindgen_test::*;
 
-    use crate::BN;
+    use super::BN;
 
     #[wasm_bindgen_test]
     fn from_primitive_uint() {
