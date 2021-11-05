@@ -24,3 +24,8 @@ uint = "0.9.1"
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3.28"
+
+[features]
+default = ["bn-js", "ethers-js"]
+bn-js = []
+ethers-js = []
