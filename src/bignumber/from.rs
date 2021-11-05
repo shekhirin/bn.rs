@@ -26,7 +26,7 @@ macro_rules! try_from_primitive_hash {
                 let hex = raw_hex.strip_prefix("0x").unwrap_or(&raw_hex);
 
                 if hex.starts_with('-') {
-                    return Err(rustc_hex::FromHexError::InvalidHexCharacter('-', 0))?;
+                    return Err(rustc_hex::FromHexError::InvalidHexCharacter('-', 0).into());
                 }
 
                 let bytes = (0..hex.len())
@@ -42,7 +42,7 @@ macro_rules! try_from_primitive_hash {
                     .collect::<Result<Vec<_>, _>>()?;
 
                 if bytes.len() > BYTES_LENGTH {
-                    return Err(rustc_hex::FromHexError::InvalidHexLength)?;
+                    return Err(rustc_hex::FromHexError::InvalidHexLength.into());
                 }
 
                 let mut result = [0 as u8; BYTES_LENGTH];
