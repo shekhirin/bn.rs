@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 use primitive_types::{H128, H160, H256, H512, U128, U256, U512};
 
 use super::{BigNumber, BigNumberError};
@@ -22,8 +20,38 @@ macro_rules! try_from_primitive_hash {
             type Error = BigNumberError;
 
             fn try_from(value: BigNumber) -> Result<$type, Self::Error> {
-                // TODO: fix $type.len() > value.hex().len() (e.g. H256 from 20-byte BigNumber)
-                Ok(<$type>::from_str(&value.hex())?)
+                const BYTES_LENGTH: usize = std::mem::size_of::<$type>();
+
+                let raw_hex = value.hex();
+                let hex = raw_hex.strip_prefix("0x").unwrap_or(&raw_hex);
+
+                if hex.starts_with('-') {
+                    return Err(rustc_hex::FromHexError::InvalidHexCharacter('-', 0))?;
+                }
+
+                let bytes = (0..hex.len())
+                    .step_by(2)
+                    .map(|i| {
+                        u8::from_str_radix(&hex[i..i + 2], 16).map_err(|_| {
+                            rustc_hex::FromHexError::InvalidHexCharacter(
+                                hex.chars().nth(i).unwrap(),
+                                i,
+                            )
+                        })
+                    })
+                    .collect::<Result<Vec<_>, _>>()?;
+
+                if bytes.len() > BYTES_LENGTH {
+                    return Err(rustc_hex::FromHexError::InvalidHexLength)?;
+                }
+
+                let mut result = [0 as u8; BYTES_LENGTH];
+                let offset = BYTES_LENGTH - bytes.len();
+                for (i, byte) in bytes.into_iter().enumerate() {
+                    result[offset + i] = byte;
+                }
+
+                Ok(<$type>::from(result))
             }
         }
     };
@@ -72,7 +100,7 @@ try_from_std!(u128);
 
 #[cfg(test)]
 mod tests {
-    use primitive_types::{H160, H256, U128, U256, U512};
+    use primitive_types::{H160, H256, H512, U128, U256, U512};
     use wasm_bindgen_test::*;
 
     use super::{BigNumber, BigNumberError};
@@ -101,10 +129,10 @@ mod tests {
     fn primitive_hash() {
         let h256 = H256::from([u8::MAX; 32]);
         let bignumber = BigNumber::new(format!("{:#x}", h256));
-        // let middle_h256 = H256::from(
-        //     <[u8; 32]>::try_from([[0; 8], [u8::MAX; 8], [u8::MAX; 8], [0; 8]].concat()).unwrap(),
-        // );
-        // let middle_bignumber = BigNumber::new(format!("{:#x}", middle_h256));
+        let middle_h256 = H256::from(
+            <[u8; 32]>::try_from([[0; 8], [u8::MAX; 8], [u8::MAX; 8], [0; 8]].concat()).unwrap(),
+        );
+        let middle_bignumber = BigNumber::new(format!("{:#x}", middle_h256));
 
         assert!(matches!(
             H160::try_from(BigNumber::from(bignumber.clone())).err(),
@@ -114,11 +142,11 @@ mod tests {
             H256::try_from(BigNumber::from(bignumber.clone())).unwrap(),
             H256::from([u8::MAX; 32]),
         );
-        // assert_eq!(H256::try_from(middle_bignumber).unwrap(), middle_h256);
-        // assert_eq!(
-        //     H512::try_from(bignumber).unwrap(),
-        //     H512::from(<[u8; 64]>::try_from([[0; 32], [u8::MAX; 32]].concat()).unwrap()),
-        // );
+        assert_eq!(H256::try_from(middle_bignumber).unwrap(), middle_h256);
+        assert_eq!(
+            H512::try_from(bignumber).unwrap(),
+            H512::from(<[u8; 64]>::try_from([[0; 32], [u8::MAX; 32]].concat()).unwrap()),
+        );
     }
 
     #[wasm_bindgen_test]
