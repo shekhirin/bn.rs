@@ -1,6 +1,6 @@
 [package]
 name = "bn-rs"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Alexey Shekhirin <alexey@shekhirin.com>"]
 license = "MIT OR Apache-2.0"
 edition = "2021"
@@ -9,7 +9,7 @@ documentation = "https://docs.rs/bn-rs"
 repository = "https://github.com/shekhirin/bn.rs"
 homepage = "https://docs.rs/bn-rs"
 description = """
-bn.js bindings for Rust & WebAssembly
+bn.js and ethers.js BigNumber bindings for Rust & WebAssembly
 """
 keywords = ["javascript", "wasm", "webassembly", "numbers"]
 
