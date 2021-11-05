@@ -1,7 +1,7 @@
 use js_sys::JsString;
 use primitive_types::{H128, H160, H256, H512, U128, U256, U512};
 
-use crate::bn::{BNError, BN};
+use super::{BNError, BN};
 
 macro_rules! try_from {
     ($type:ty, $byte_length:expr, $from_fn:ident) => {
@@ -69,10 +69,10 @@ mod tests {
     use primitive_types::{H160, H256, H512, U128, U256, U512};
     use wasm_bindgen_test::*;
 
-    use crate::bn::{BNError, BN};
+    use super::{BNError, BN};
 
     #[wasm_bindgen_test]
-    fn try_from_primitive_uint() {
+    fn primitive_uint() {
         let bn = BN::new(U256::MAX.to_string(), 10);
         let middle_bn = BN::new((U256::MAX - U256::from(U128::MAX)).to_string(), 10);
 
@@ -89,7 +89,7 @@ mod tests {
     }
 
     #[wasm_bindgen_test]
-    fn try_from_primitive_hash() {
+    fn primitive_hash() {
         let h256 = H256::from([u8::MAX; 32]);
         let bn = BN::new(format!("{:x}", h256), 16);
         let middle_h256 = H256::from(
@@ -105,15 +105,29 @@ mod tests {
             H256::try_from(BN::from(bn.clone())).unwrap(),
             H256::from([u8::MAX; 32]),
         );
-        assert_eq!(H256::try_from(middle_bn).unwrap(), middle_h256,);
+        assert_eq!(H256::try_from(middle_bn).unwrap(), middle_h256);
         assert_eq!(
             H512::try_from(bn).unwrap(),
             H512::from(<[u8; 64]>::try_from([[0; 32], [u8::MAX; 32]].concat()).unwrap()),
         );
     }
 
+    // #[wasm_bindgen_test]
+    // fn std_int() {
+    //     let bn = BN::new(i64::MAX.to_string(), 10);
+    //     let middle_i64 = i64::MAX - i32::MAX as i64;
+    //     let middle_bn = BN::new(middle_i64.to_string(), 10);
+    //
+    //     assert!(matches!(
+    //         i8::try_from(BN::from(bn.clone())).err(),
+    //         Some(BNError::Overflow(_))
+    //     ));
+    //     assert_eq!(i64::try_from(middle_bn).unwrap(), middle_i64);
+    //     assert_eq!(i128::try_from(bn).unwrap(), i64::MAX as i128);
+    // }
+
     #[wasm_bindgen_test]
-    fn try_from_std() {
+    fn std_uint() {
         let bn = BN::new(u64::MAX.to_string(), 10);
         let middle_u64 = u64::MAX - u32::MAX as u64;
         let middle_bn = BN::new(middle_u64.to_string(), 10);

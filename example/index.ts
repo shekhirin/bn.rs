@@ -1,10 +1,11 @@
 import {sum, is_dead} from './pkg'
 import BN from 'bn.js'
+import {BigNumber} from "@ethersproject/bignumber"
 
-const a = new BN(2 ** 26, 10)
+const a = BigNumber.from(2 ** 26)
 const b = new BN(2 ** 26, 10)
 const wasmResult = sum(a, b)
-const bnResult = a.add(b)
+const bnResult = a.add(BigNumber.from(b.toString()))
 
 console.log(`a = ${a}, b = ${b}`)
 console.log(`sum(a, b) = ${wasmResult}`)
@@ -14,8 +15,9 @@ console.assert(wasmResult.toString() == bnResult.toString())
 console.log()
 
 const hash = new BN('dead', 'hex')
-const isDeadResult = is_dead(hash)
+const dead = BigNumber.from('0xdead')
+const isDeadResult = is_dead(hash, dead)
 
-console.log(`hash = ${hash.toString('hex')}`)
-console.log(`is_dead(hash) = ${isDeadResult}`)
+console.log(`hash = ${hash.toString('hex')}, dead = ${dead.toHexString()}`)
+console.log(`is_dead(hash, dead) = ${isDeadResult}`)
 console.assert(isDeadResult)

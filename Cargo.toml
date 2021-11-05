@@ -16,8 +16,11 @@ keywords = ["javascript", "wasm", "webassembly", "numbers"]
 [dependencies]
 wasm-bindgen = "0.2.78"
 js-sys = "0.3.55"
-primitive-types = { version = "0.10.1", default-features = false }
+primitive-types = { version = "0.10.1", features = ["rustc-hex"] }
+rustc-hex = "2.0.1"
+getrandom = { version = "0.2.3", features = ["js"] }
 thiserror = "1.0.30"
+uint = "0.9.1"
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3.28"

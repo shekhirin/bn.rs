@@ -24,9 +24,12 @@ dependencies = [
 name = "bn-rs"
 version = "0.1.2"
 dependencies = [
+ "getrandom",
  "js-sys",
  "primitive-types",
+ "rustc-hex",
  "thiserror",
+ "uint",
  "wasm-bindgen",
 ]
 
