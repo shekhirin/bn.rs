@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 use primitive_types::{H160, U128};
 use wasm_bindgen::prelude::*;
 
@@ -7,7 +5,7 @@ use bn_rs::{BigNumber, BN};
 
 #[wasm_bindgen]
 pub fn sum(a: BigNumber, b: BN) -> Result<BigNumber, JsValue> {
-    // `BigNumberError` and `BNError` implement `Into<JsValue>`, so we can use `?` here
+    // Both `BigNumberError` and `BNError` implement `Into<JsValue>`, so we can use `?` here
 
     let a = i128::try_from(a)?; // std uints are supported
     let b: U128 = b.try_into()?; // primitive-types uints supported too
