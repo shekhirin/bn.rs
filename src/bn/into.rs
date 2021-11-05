@@ -36,6 +36,12 @@ from_primitive!(H128);
 from_primitive!(H160);
 from_primitive!(H256);
 from_primitive!(H512);
+// from_std!(isize);
+// from_std!(i8);
+// from_std!(i16);
+// from_std!(i32);
+// from_std!(i64);
+// from_std!(i128);
 from_std!(usize);
 from_std!(u8);
 from_std!(u16);
@@ -51,28 +57,36 @@ mod tests {
     use super::BN;
 
     #[wasm_bindgen_test]
-    fn from_primitive_uint() {
+    fn primitive_uint() {
         let value = U256::MAX - U256::from(U128::MAX);
         let bn = BN::from(value.clone());
 
-        assert_eq!(TryInto::<U256>::try_into(bn).unwrap(), value);
+        assert_eq!(U256::try_from(bn).unwrap(), value);
     }
 
     #[wasm_bindgen_test]
-    fn from_primitive_hash() {
+    fn primitive_hash() {
         let value = H256::from(
-            <[u8; 32]>::try_from([[0; 8], [u8::MAX; 8], [u8::MAX; 8], [0; 8]].concat()).unwrap(),
+            <[u8; 32]>::try_from([[u8::MAX; 8], [0; 8], [0; 8], [u8::MAX; 8]].concat()).unwrap(),
         );
         let bn = BN::from(value.clone());
 
-        assert_eq!(TryInto::<H256>::try_into(bn).unwrap(), value);
+        assert_eq!(H256::try_from(bn).unwrap(), value);
     }
 
+    // #[wasm_bindgen_test]
+    // fn std_int() {
+    //     let value = i128::MAX - i64::MAX as i128;
+    //     let bn = BN::from(value.clone());
+    //
+    //     assert_eq!(i128::try_from(bn).unwrap(), value);
+    // }
+
     #[wasm_bindgen_test]
-    fn from_std() {
+    fn std_uint() {
         let value = u128::MAX - u64::MAX as u128;
         let bn = BN::from(value.clone());
 
-        assert_eq!(TryInto::<u128>::try_into(bn).unwrap(), value);
+        assert_eq!(u128::try_from(bn).unwrap(), value);
     }
 }

@@ -78,7 +78,7 @@ mod tests {
     use super::{BigNumber, BigNumberError};
 
     #[wasm_bindgen_test]
-    fn try_from_primitive_uint() {
+    fn primitive_uint() {
         let bignumber = BigNumber::new(U256::MAX.to_string());
         let middle_bignumber = BigNumber::new((U256::MAX - U256::from(U128::MAX)).to_string());
 
@@ -98,7 +98,7 @@ mod tests {
     }
 
     #[wasm_bindgen_test]
-    fn try_from_primitive_hash() {
+    fn primitive_hash() {
         let h256 = H256::from([u8::MAX; 32]);
         let bignumber = BigNumber::new(format!("{:#x}", h256));
         // let middle_h256 = H256::from(
@@ -122,7 +122,7 @@ mod tests {
     }
 
     #[wasm_bindgen_test]
-    fn try_from_std_uint() {
+    fn std_uint() {
         let bignumber = BigNumber::new(u64::MAX.to_string());
         let middle_u64 = u64::MAX - u32::MAX as u64;
         let middle_bignumber = BigNumber::new(middle_u64.to_string());
@@ -136,7 +136,7 @@ mod tests {
     }
 
     #[wasm_bindgen_test]
-    fn try_from_std_int() {
+    fn std_int() {
         let bignumber = BigNumber::new(i64::MIN.to_string());
         let middle_i64 = i64::MIN - i32::MIN as i64;
         let middle_bignumber = BigNumber::new(middle_i64.to_string());
